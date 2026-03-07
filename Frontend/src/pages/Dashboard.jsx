@@ -50,9 +50,12 @@ const Dashboard = () => {
   }, []);
 
   const handleSubmit = () => {
-    if (!canSubmit) return;
+    if (!canSubmit || loading) return;
     setLoading(true);
-    setTimeout(() => { setLoading(false); setSubmitted(true); }, 1400);
+    // Navigate to results page with product name as query param
+    setTimeout(() => {
+      navigate(`/results?product=${encodeURIComponent(product.trim())}`);
+    }, 400);
   };
 
   return (
@@ -65,24 +68,6 @@ const Dashboard = () => {
 
       <Navbar />
 
-      {submitted ? (
-        /* SUCCESS STATE */
-        <div style={{ maxWidth: 560, margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
-          <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,#6366f1,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, margin: "0 auto 24px", boxShadow: "0 0 48px rgba(99,102,241,0.5)" }}>✓</div>
-          <h2 style={{ fontSize: 26, fontWeight: 900, margin: "0 0 10px", letterSpacing: "-0.02em" }}>Research Launched!</h2>
-          <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 15, lineHeight: 1.7, maxWidth: 380, margin: "0 auto 10px" }}>
-            <strong style={{ color: "#a5b4fc" }}>{product}</strong> · Full Intelligence Report
-          </p>
-          <div style={{ display: "inline-block", background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 10, padding: "10px 20px", margin: "16px 0 32px" }}>
-            <span style={{ fontSize: 13, color: "#a5b4fc", fontWeight: 600 }}>⚡ Insights ready in ~2 minutes</span>
-          </div>
-          <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => { setSubmitted(false); setProduct(""); }} style={{ background: "linear-gradient(135deg,#6366f1,#8b5cf6)", color: "#fff", border: "none", padding: "12px 26px", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>New Research</button>
-            <button onClick={() => navigate("/")} style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.1)", padding: "12px 26px", borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>Back to Home</button>
-          </div>
-        </div>
-
-      ) : (
         <>
           {/* HERO SECTION */}
           <div style={{ textAlign: "center", padding: "72px 24px 0", maxWidth: 700, margin: "0 auto" }}>
@@ -220,7 +205,7 @@ const Dashboard = () => {
         
           </div>
         </>
-      )}
+      
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
